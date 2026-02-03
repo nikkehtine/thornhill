@@ -45,7 +45,12 @@ function love.draw()
         love.graphics.line(0, y * CELLSIZE, GRIDSIZE.width * CELLSIZE, y * CELLSIZE)
     end
 
-    PlayerActor:draw()
+    -- PlayerActor
+    love.graphics.setColor(0.4, 0.1, 0.15)
+    love.graphics.rectangle("fill",
+        PlayerActor.displayX * CELLSIZE,
+        PlayerActor.displayY * CELLSIZE,
+        CELLSIZE, CELLSIZE)
 
     -- HUD
     love.graphics.setColor(0.8, 0.8, 0.8)
