@@ -1,4 +1,5 @@
 local player = require "actors/player"
+local helpers = require "helpers"
 
 function love.load()
     -- Name of the game
@@ -25,12 +26,21 @@ function love.update(dt)
     PlayerActor.displayX = PlayerActor.displayX + (PlayerActor.targetX - PlayerActor.displayX) * lerpSpeed
     PlayerActor.displayY = PlayerActor.displayY + (PlayerActor.targetY - PlayerActor.displayY) * lerpSpeed
 
-    if math.abs(PlayerActor.displayX - PlayerActor.targetX) < 0.0001 then
+    if math.abs(PlayerActor.displayX - PlayerActor.targetX) < 0.001 then
         PlayerActor.displayX = PlayerActor.targetX
     end
-    if math.abs(PlayerActor.displayY - PlayerActor.targetY) < 0.0001 then
+    if math.abs(PlayerActor.displayY - PlayerActor.targetY) < 0.001 then
         PlayerActor.displayY = PlayerActor.targetY
     end
+
+    -- if PlayerActor.displayX == PlayerActor.targetX and
+    --     PlayerActor.displayY == PlayerActor.targetY
+    -- then
+    --     PlayerActor.x = PlayerActor.targetX
+    --     PlayerActor.y = PlayerActor.targetY
+    -- end
+    PlayerActor.x = helpers.round(PlayerActor.displayX)
+    PlayerActor.y = helpers.round(PlayerActor.displayY)
 end
 
 function love.draw()
@@ -46,7 +56,7 @@ function love.draw()
     end
 
     -- PlayerActor
-    love.graphics.setColor(0.4, 0.1, 0.15)
+    love.graphics.setColor(0.6, 0.2, 0.25)
     love.graphics.rectangle("fill",
         PlayerActor.displayX * CELLSIZE,
         PlayerActor.displayY * CELLSIZE,
@@ -71,25 +81,14 @@ function love.keypressed(key, scancode, isRepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "w" or key == "up" then
-        moveActor(PlayerActor, 0, -1)
+        helpers.moveActor(PlayerActor, 0, -1)
     elseif key == "s" or key == "down" then
-        moveActor(PlayerActor, 0, 1)
+        helpers.moveActor(PlayerActor, 0, 1)
     elseif key == "a" or key == "left" then
-        moveActor(PlayerActor, -1, 0)
+        helpers.moveActor(PlayerActor, -1, 0)
     elseif key == "d" or key == "right" then
-        moveActor(PlayerActor, 1, 0)
+        helpers.moveActor(PlayerActor, 1, 0)
     elseif key == "space" then
-        moveActor(PlayerActor, 2, 3)
-    end
-end
-
-function moveActor(actor, x, y)
-    local newX = actor.targetX + x
-    local newY = actor.targetY + y
-    -- Boundary checks
-    if newX >= 0 and newX < GRIDSIZE.width and
-        newY >= 0 and newY < GRIDSIZE.height then
-        actor.targetX = newX
-        actor.targetY = newY
+        helpers.moveActor(PlayerActor, 2, 3)
     end
 end
