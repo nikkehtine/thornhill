@@ -21,7 +21,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-    love.graphics.setColor(0.4, 0.1, 0.15)
+    love.graphics.setColor(0.6, 0.2, 0.25)
     love.graphics.rectangle("fill",
         self.displayX * CELLSIZE,
         self.displayY * CELLSIZE,

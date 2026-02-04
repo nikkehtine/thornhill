@@ -1,5 +1,7 @@
-local player = require "actors/player"
+local entities = require "entities/entities"
 local helpers = require "helpers"
+local player = require "entities/actors/player"
+local turncounter = require "mechanics/turncounter"
 
 function love.load()
     -- Name of the game
@@ -12,6 +14,7 @@ function love.load()
         height = 20
     }
 
+    -- Set up player actor
     PlayerActor = player:new(12, 9)
 
     -- Slide speed of entity movement
@@ -61,6 +64,8 @@ function love.draw()
         PlayerActor.displayX * CELLSIZE,
         PlayerActor.displayY * CELLSIZE,
         CELLSIZE, CELLSIZE)
+    -- TODO: fix this later (look into metatables)
+    -- PlayerActor:draw()
 
     -- HUD
     love.graphics.setColor(0.8, 0.8, 0.8)
@@ -81,14 +86,15 @@ function love.keypressed(key, scancode, isRepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "w" or key == "up" then
-        helpers.moveActor(PlayerActor, 0, -1)
+        entities.moveActor(PlayerActor, 0, -1)
     elseif key == "s" or key == "down" then
-        helpers.moveActor(PlayerActor, 0, 1)
+        entities.moveActor(PlayerActor, 0, 1)
     elseif key == "a" or key == "left" then
-        helpers.moveActor(PlayerActor, -1, 0)
+        entities.moveActor(PlayerActor, -1, 0)
     elseif key == "d" or key == "right" then
-        helpers.moveActor(PlayerActor, 1, 0)
+        entities.moveActor(PlayerActor, 1, 0)
     elseif key == "space" then
-        helpers.moveActor(PlayerActor, 2, 3)
+        -- this is random bs btw change it later
+        entities.moveActor(PlayerActor, 2, 3)
     end
 end

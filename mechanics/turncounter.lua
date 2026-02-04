@@ -1,0 +1,3 @@
+local TurnCounter = {}
+
+return TurnCounter
