@@ -29,7 +29,7 @@ function love.update(dt)
     PlayerActor.displayX = PlayerActor.displayX + (PlayerActor.targetX - PlayerActor.displayX) * lerpSpeed
     PlayerActor.displayY = PlayerActor.displayY + (PlayerActor.targetY - PlayerActor.displayY) * lerpSpeed
 
-    if math.abs(PlayerActor.displayX - PlayerActor.targetX) < 0.001 then
+    if math.abs(PlayerActor.displayX - PlayerActor.targetX) < 0.01 then
         PlayerActor.displayX = PlayerActor.targetX
     end
     if math.abs(PlayerActor.displayY - PlayerActor.targetY) < 0.001 then
