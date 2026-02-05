@@ -2,6 +2,7 @@ local entities = require "entities/entities"
 local helpers = require "helpers"
 local player = require "entities/actors/player"
 local turncounter = require "mechanics/turncounter"
+local debughud = require "ui/debughud"
 
 function love.load()
     -- Name of the game
@@ -32,16 +33,10 @@ function love.update(dt)
     if math.abs(PlayerActor.displayX - PlayerActor.targetX) < 0.01 then
         PlayerActor.displayX = PlayerActor.targetX
     end
-    if math.abs(PlayerActor.displayY - PlayerActor.targetY) < 0.001 then
+    if math.abs(PlayerActor.displayY - PlayerActor.targetY) < 0.01 then
         PlayerActor.displayY = PlayerActor.targetY
     end
 
-    -- if PlayerActor.displayX == PlayerActor.targetX and
-    --     PlayerActor.displayY == PlayerActor.targetY
-    -- then
-    --     PlayerActor.x = PlayerActor.targetX
-    --     PlayerActor.y = PlayerActor.targetY
-    -- end
     PlayerActor.x = helpers.round(PlayerActor.displayX)
     PlayerActor.y = helpers.round(PlayerActor.displayY)
 end
@@ -58,28 +53,8 @@ function love.draw()
         love.graphics.line(0, y * CELLSIZE, GRIDSIZE.width * CELLSIZE, y * CELLSIZE)
     end
 
-    -- PlayerActor
-    love.graphics.setColor(0.6, 0.2, 0.25)
-    love.graphics.rectangle("fill",
-        PlayerActor.displayX * CELLSIZE,
-        PlayerActor.displayY * CELLSIZE,
-        CELLSIZE, CELLSIZE)
-    -- TODO: fix this later (look into metatables)
-    -- PlayerActor:draw()
-
-    -- HUD
-    love.graphics.setColor(0.8, 0.8, 0.8)
-    love.graphics.print("Hello, World!", 360, 300)
-
-    -- Debug HUD
-    love.graphics.setColor(0, 0.4, 0.4, 0.5)
-    love.graphics.rectangle("fill", 0, 0, 200, 100)
-    love.graphics.setColor(0.9, 0.9, 0.9, 1)
-    -- PlayerActor position
-    love.graphics.print("PlayerActor Position:", 6, 4)
-    love.graphics.print("Real: (" .. PlayerActor.x .. ", " .. PlayerActor.y .. ")", 24, 20)
-    love.graphics.print("Target: (" .. PlayerActor.targetX .. ", " .. PlayerActor.targetY .. ")", 24, 36)
-    love.graphics.print("Display: (" .. PlayerActor.displayX .. ", " .. PlayerActor.displayY .. ")", 24, 52)
+    PlayerActor:draw()
+    debughud.draw()
 end
 
 function love.keypressed(key, scancode, isRepeat)
@@ -94,6 +69,8 @@ function love.keypressed(key, scancode, isRepeat)
     elseif key == "d" or key == "right" then
         entities.moveActor(PlayerActor, 1, 0)
     elseif key == "space" then
+        turncounter.nextTurn()
+    elseif key == "q" then
         -- this is random bs btw change it later
         entities.moveActor(PlayerActor, 2, 3)
     end

@@ -1,4 +1,7 @@
 local Player = {}
+Player.__index = Player
+-- Doing Rust style inheritance using metatables
+-- https://cyevgeniy.github.io/luadocs/02_basic_concepts/ch04.html
 
 function Player:new(x, y)
     local self = {
@@ -10,6 +13,8 @@ function Player:new(x, y)
         displayY = y,
         speed = 25,
     }
+    setmetatable(self, Player)
+    self.__index = self
     return self
 end
 
