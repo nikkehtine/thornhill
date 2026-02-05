@@ -18,6 +18,13 @@ function Player:new(x, y)
     return self
 end
 
+-- The reason we need three separate coordinates is because they all track different things:
+--  * x and y are the actual position of the player in the game world
+--  * targetX and targetY are the position the player is trying to move to
+--  * displayX and displayY are the position the player is currently displayed at on the screen
+-- This is needed for smooth sliding animation, and because movement can be interrupted,
+-- for example when player activates a trap that leaves them immobilized.
+
 function Player:update(dt)
     local lerpSpeed = self.speed * dt
 

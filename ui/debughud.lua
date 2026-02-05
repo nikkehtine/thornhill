@@ -12,6 +12,10 @@ function DebugHUD.draw()
     love.graphics.print(
         "Display: (" .. string.format("%.2f", PlayerActor.displayX) ..
         ", " .. string.format("%.2f", PlayerActor.displayY) .. ")", 24, 52)
+
+    -- TurnCounter
+    love.graphics.print("TurnCounter:", 6, 68)
+    love.graphics.print("Turn: " .. TurnCounter.turn, 24, 84)
 end
 
 return DebugHUD

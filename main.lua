@@ -18,6 +18,10 @@ function love.load()
     -- Set up player actor
     PlayerActor = player:new(12, 9)
 
+    TurnCounter = turncounter:new()
+
+    TurnCounter:start()
+
     -- Slide speed of entity movement
     SlideSpeed = 12
 
@@ -27,15 +31,7 @@ end
 function love.update(dt)
     local lerpSpeed = SlideSpeed * dt
 
-    PlayerActor.displayX = PlayerActor.displayX + (PlayerActor.targetX - PlayerActor.displayX) * lerpSpeed
-    PlayerActor.displayY = PlayerActor.displayY + (PlayerActor.targetY - PlayerActor.displayY) * lerpSpeed
-
-    if math.abs(PlayerActor.displayX - PlayerActor.targetX) < 0.01 then
-        PlayerActor.displayX = PlayerActor.targetX
-    end
-    if math.abs(PlayerActor.displayY - PlayerActor.targetY) < 0.01 then
-        PlayerActor.displayY = PlayerActor.targetY
-    end
+    entities.moveAndSlide(PlayerActor, lerpSpeed)
 
     PlayerActor.x = helpers.round(PlayerActor.displayX)
     PlayerActor.y = helpers.round(PlayerActor.displayY)
@@ -69,7 +65,7 @@ function love.keypressed(key, scancode, isRepeat)
     elseif key == "d" or key == "right" then
         entities.moveActor(PlayerActor, 1, 0)
     elseif key == "space" then
-        turncounter.nextTurn()
+        turncounter:nextTurn()
     elseif key == "q" then
         -- this is random bs btw change it later
         entities.moveActor(PlayerActor, 2, 3)
