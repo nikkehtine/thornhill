@@ -1,12 +1,12 @@
-local Entity = require "entities/entity"
+local GameObject = require "gameobjects/gameobject"
 
-local Player = setmetatable({}, { __index = Entity })
+local Player = setmetatable({}, { __index = GameObject })
 Player.__index = Player
 -- Doing Rust style inheritance using metatables
 -- https://cyevgeniy.github.io/luadocs/02_basic_concepts/ch04.html
 
 function Player:new(x, y)
-    local instance = Entity.new(self, x, y)
+    local instance = GameObject.new(self, x, y)
     instance.speed = 25
     return instance
 end

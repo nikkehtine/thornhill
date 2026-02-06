@@ -1,9 +1,9 @@
-local EntityEnum = require "entities/enums"
+local GameObjectEnum = require "gameobjects/enums"
 
-local Entity = {}
-Entity.__index = Entity
+local GameObject = {}
+GameObject.__index = GameObject
 
-function Entity:new(x, y)
+function GameObject:new(x, y)
     local instance = setmetatable({
         x = x or 0,
         y = y or 0,
@@ -13,13 +13,13 @@ function Entity:new(x, y)
         displayY = y or 0,
         isMoving = false,
         speed = 0,
-        size = EntityEnum.Size.MEDIUM
+        size = GameObjectEnum.Size.MEDIUM
     }, self)
     return instance
 end
 
--- Move the entity to a new position (intent)
-function Entity:move(x, y)
+-- Move the GameObject to a new position (intent)
+function GameObject:move(x, y)
     if self.isMoving then return end
 
     local newX = self.targetX + x
@@ -34,7 +34,7 @@ function Entity:move(x, y)
     end
 end
 
-function Entity:moveAndSlide(lerpSpeed)
+function GameObject:moveAndSlide(lerpSpeed)
     self.displayX = self.displayX + (self.targetX - self.displayX) * lerpSpeed
     self.displayY = self.displayY + (self.targetY - self.displayY) * lerpSpeed
 
@@ -47,4 +47,4 @@ function Entity:moveAndSlide(lerpSpeed)
     end
 end
 
-return Entity
+return GameObject

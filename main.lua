@@ -1,5 +1,5 @@
 local helpers = require "scripts/helpers"
-local player = require "entities/actors/player"
+local player = require "gameobjects/actors/player"
 local turncounter = require "mechanics/turncounter"
 local debughud = require "ui/debughud"
 
