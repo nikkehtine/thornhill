@@ -1,12 +1,9 @@
-local entities = require "entities/entities"
-local helpers = require "helpers"
+local helpers = require "scripts/helpers"
 local player = require "entities/actors/player"
 local turncounter = require "mechanics/turncounter"
 local debughud = require "ui/debughud"
 
 function love.load()
-    -- Name of the game
-    TITLE = "Thornhill"
     -- Size of cells in pixels
     CELLSIZE = 32
     -- Size of the playable grid
@@ -15,23 +12,21 @@ function love.load()
         height = 20
     }
 
-    -- Set up player actor
+    Debug = false
+
     PlayerActor = player:new(12, 9)
 
     TurnCounter = turncounter:new()
-
     TurnCounter:start()
 
     -- Slide speed of entity movement
     SlideSpeed = 12
-
-    love.window.setTitle(TITLE)
 end
 
 function love.update(dt)
     local lerpSpeed = SlideSpeed * dt
 
-    entities.moveAndSlide(PlayerActor, lerpSpeed)
+    PlayerActor:moveAndSlide(lerpSpeed)
 
     PlayerActor.x = helpers.round(PlayerActor.displayX)
     PlayerActor.y = helpers.round(PlayerActor.displayY)
@@ -50,24 +45,26 @@ function love.draw()
     end
 
     PlayerActor:draw()
-    debughud.draw()
+
+    if Debug then
+        debughud.draw()
+    end
 end
 
 function love.keypressed(key, scancode, isRepeat)
     if key == "escape" then
         love.event.quit()
     elseif key == "w" or key == "up" then
-        entities.moveActor(PlayerActor, 0, -1)
+        PlayerActor:move(0, -1)
     elseif key == "s" or key == "down" then
-        entities.moveActor(PlayerActor, 0, 1)
+        PlayerActor:move(0, 1)
     elseif key == "a" or key == "left" then
-        entities.moveActor(PlayerActor, -1, 0)
+        PlayerActor:move(-1, 0)
     elseif key == "d" or key == "right" then
-        entities.moveActor(PlayerActor, 1, 0)
+        PlayerActor:move(1, 0)
     elseif key == "space" then
         turncounter:nextTurn()
-    elseif key == "q" then
-        -- this is random bs btw change it later
-        entities.moveActor(PlayerActor, 2, 3)
+    elseif key == "f3" then
+        Debug = not Debug
     end
 end

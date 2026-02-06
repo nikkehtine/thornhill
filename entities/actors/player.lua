@@ -1,21 +1,14 @@
-local Player = {}
+local Entity = require "entities/entity"
+
+local Player = setmetatable({}, { __index = Entity })
 Player.__index = Player
 -- Doing Rust style inheritance using metatables
 -- https://cyevgeniy.github.io/luadocs/02_basic_concepts/ch04.html
 
 function Player:new(x, y)
-    local self = {
-        x = x,
-        y = y,
-        targetX = x,
-        targetY = y,
-        displayX = x,
-        displayY = y,
-        speed = 25,
-    }
-    setmetatable(self, Player)
-    self.__index = self
-    return self
+    local instance = Entity.new(self, x, y)
+    instance.speed = 25
+    return instance
 end
 
 -- The reason we need three separate coordinates is because they all track different things:

@@ -2,7 +2,7 @@ local DebugHUD = {}
 
 function DebugHUD.draw()
     love.graphics.setColor(0, 0.4, 0.4, 0.5)
-    love.graphics.rectangle("fill", 0, 0, 200, 100)
+    love.graphics.rectangle("fill", 0, 0, 200, 120)
     love.graphics.setColor(0.9, 0.9, 0.9, 1)
 
     -- PlayerActor position
@@ -12,10 +12,11 @@ function DebugHUD.draw()
     love.graphics.print(
         "Display: (" .. string.format("%.2f", PlayerActor.displayX) ..
         ", " .. string.format("%.2f", PlayerActor.displayY) .. ")", 24, 52)
+    love.graphics.print("Is moving: " .. tostring(PlayerActor.isMoving), 24, 68)
 
     -- TurnCounter
-    love.graphics.print("TurnCounter:", 6, 68)
-    love.graphics.print("Turn: " .. TurnCounter.turn, 24, 84)
+    love.graphics.print("TurnCounter:", 6, 84)
+    love.graphics.print("Turn: " .. TurnCounter.turn, 24, 100)
 end
 
 return DebugHUD
