@@ -1,8 +1,11 @@
 local ECS = require "ecs/ecs"
+local helpers = require "scripts/helpers"
+
+local Components = require "components/_types"
 local Position = require "components/position"
 local Health = require "components/health"
-local ComponentsType = require "components/_types"
-local helpers = require "scripts/helpers"
+local PlayerControlled = require "components/player_controlled"
+local TurnCounter = require "components/game_controllers/turn_counter"
 
 local World = ECS.new()
 
@@ -19,9 +22,26 @@ IsRunning = true
 SlideSpeed = 12
 
 function love.load()
+    TurnManager = World:createEntity()
+    World:addComponent(TurnManager, Components.TurnCounter, TurnCounter(1))
+
+    Player = World:createEntity()
+    World:addComponent(Player, Components.Position, Position(8, 12))
+    World:addComponent(Player, Components.Health, Health(15))
+    World:addComponent(Player, Components.PlayerControlled, PlayerControlled())
+
+    Boulder = World:createEntity()
+    World:addComponent(Boulder, Components.Position, Position(10, 10))
+
     Creature = World:createEntity()
-    World:addComponent(Creature, ComponentsType.Position, Position(5, 5))
-    print("Added creature with ID", Creature)
+    World:addComponent(Creature, Components.Position, Position(5, 5))
+    World:addComponent(Creature, Components.Health, Health(5))
+
+    -- Print debug information for each entity using World:printEntityDebugInfo()
+    World:printEntityDebugInfo(Player)
+    World:printEntityDebugInfo(Boulder)
+    World:printEntityDebugInfo(Creature)
+    World:printEntityDebugInfo(TurnManager)
 end
 
 function love.update(dt)
