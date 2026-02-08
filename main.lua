@@ -11,7 +11,6 @@ local Position = require "components/position"
 local Renderable = require "components/renderable"
 local TurnCounter = require "components/game_controllers/turn_counter"
 
-local World = ECS.new()
 
 --- Size of cells in pixels
 CELLSIZE = 32
@@ -26,31 +25,43 @@ IsRunning = true
 SlideSpeed = 12
 
 function love.load()
+    GameFont = love.graphics.newFont(
+        "assets/fonts/Germania_One/GermaniaOne-Regular.ttf",
+        16)
+    love.graphics.print("Hello World!", 100, 100)
+
+    World = ECS.new()
+
     TurnManager = World:createEntity()
     World:addComponent(TurnManager, Components.TurnCounter, TurnCounter(1))
+    World:printEntityDebugInfo(TurnManager)
 
     Player = World:createEntity()
     World:addComponent(Player, Components.Name, Name("Jacques"))
-    World:addComponent(Player, Components.Position, Position(8, 12))
+    World:addComponent(Player, Components.Position, Position(20, 11))
     World:addComponent(Player, Components.Health, Health(15))
     World:addComponent(Player, Components.Renderable, Renderable(0.6, 0.2, 0.25))
-    World:addComponent(Player, Components.PlayerControlled, PlayerControlled())
-
-    Boulder = World:createEntity()
-    World:addComponent(Boulder, Components.Position, Position(10, 10))
-    World:addComponent(Boulder, Components.Renderable, Renderable(0.6, 0.6, 0.6))
-
-    Goblin = World:createEntity()
-    World:addComponent(Goblin, Components.Name, Name("Goblin"))
-    World:addComponent(Goblin, Components.Position, Position(5, 5))
-    World:addComponent(Goblin, Components.Health, Health(5))
-    World:addComponent(Goblin, Components.Renderable, Renderable(0.2, 0.6, 0.3))
-
-    -- Print debug information for each entity using World:printEntityDebugInfo()
+    World:addComponent(Player, Components.PlayerControlled, PlayerControlled(1))
     World:printEntityDebugInfo(Player)
-    World:printEntityDebugInfo(Boulder)
-    World:printEntityDebugInfo(Goblin)
-    World:printEntityDebugInfo(TurnManager)
+
+    for i = 1, 5 do
+        local Boulder = World:createEntity()
+        World:addComponent(Boulder, Components.Name, Name("Rock"))
+        World:addComponent(Boulder, Components.Position,
+            Position(love.math.random(GRIDSIZE.width), love.math.random(GRIDSIZE.height)))
+        World:addComponent(Boulder, Components.Renderable, Renderable(0.6, 0.6, 0.6))
+        World:printEntityDebugInfo(Boulder)
+    end
+
+    for i = 1, 5 do
+        local Goblin = World:createEntity()
+        World:addComponent(Goblin, Components.Name, Name("Goblin #" .. i))
+        World:addComponent(Goblin, Components.Position,
+            Position(love.math.random(GRIDSIZE.width), love.math.random(GRIDSIZE.height - 1)))
+        World:addComponent(Goblin, Components.Health, Health(5))
+        World:addComponent(Goblin, Components.Renderable, Renderable(0.2, 0.6, 0.3))
+        World:printEntityDebugInfo(Goblin)
+    end
 end
 
 function love.update(dt)
