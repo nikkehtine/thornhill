@@ -145,6 +145,7 @@ function ECS:removeComponent(entity, componentType)
 end
 
 ---Get an entity's debug information
+---TODO: Print all tables recursively
 ---@param entity EntityId
 ---@return nil
 function ECS:printEntityDebugInfo(entity)
@@ -155,12 +156,21 @@ function ECS:printEntityDebugInfo(entity)
     print("Entity #" .. entity)
     for componentType, _ in pairs(self.components) do
         if self:hasComponent(entity, componentType) then
-            print("  " .. Helpers.reverseLookup(Components, componentType) .. ":")
-            for key, value in pairs(self.components[componentType][entity]) do
-                print("    " .. key .. ": " .. tostring(value))
+            local componentData = self.components[componentType][entity]
+            local componentName = Helpers.reverseLookup(Components, componentType)
+
+            if type(componentData) == "table" then
+                print("  " .. componentName .. ":")
+                for key, value in pairs(componentData) do
+                    print("    " .. key .. ": " .. tostring(value))
+                end
+            else -- Primitive value
+                print("  " .. componentName .. ": " .. tostring(componentData))
             end
         end
     end
+
+    print()
 end
 
 ---Query entities with specific components

@@ -1,10 +1,14 @@
 local ECS = require "ecs/ecs"
 local helpers = require "scripts/helpers"
 
+local RenderSystem = require "systems/render_system"
+
 local Components = require "components/_types"
-local Position = require "components/position"
 local Health = require "components/health"
+local Name = require "components/name"
 local PlayerControlled = require "components/player_controlled"
+local Position = require "components/position"
+local Renderable = require "components/renderable"
 local TurnCounter = require "components/game_controllers/turn_counter"
 
 local World = ECS.new()
@@ -13,8 +17,8 @@ local World = ECS.new()
 CELLSIZE = 32
 -- Size of the playable grid
 GRIDSIZE = {
-    width = 25,
-    height = 20
+    width = 40,
+    height = 23
 }
 Debug = false
 IsRunning = true
@@ -26,21 +30,26 @@ function love.load()
     World:addComponent(TurnManager, Components.TurnCounter, TurnCounter(1))
 
     Player = World:createEntity()
+    World:addComponent(Player, Components.Name, Name("Jacques"))
     World:addComponent(Player, Components.Position, Position(8, 12))
     World:addComponent(Player, Components.Health, Health(15))
+    World:addComponent(Player, Components.Renderable, Renderable(0.6, 0.2, 0.25))
     World:addComponent(Player, Components.PlayerControlled, PlayerControlled())
 
     Boulder = World:createEntity()
     World:addComponent(Boulder, Components.Position, Position(10, 10))
+    World:addComponent(Boulder, Components.Renderable, Renderable(0.6, 0.6, 0.6))
 
-    Creature = World:createEntity()
-    World:addComponent(Creature, Components.Position, Position(5, 5))
-    World:addComponent(Creature, Components.Health, Health(5))
+    Goblin = World:createEntity()
+    World:addComponent(Goblin, Components.Name, Name("Goblin"))
+    World:addComponent(Goblin, Components.Position, Position(5, 5))
+    World:addComponent(Goblin, Components.Health, Health(5))
+    World:addComponent(Goblin, Components.Renderable, Renderable(0.2, 0.6, 0.3))
 
     -- Print debug information for each entity using World:printEntityDebugInfo()
     World:printEntityDebugInfo(Player)
     World:printEntityDebugInfo(Boulder)
-    World:printEntityDebugInfo(Creature)
+    World:printEntityDebugInfo(Goblin)
     World:printEntityDebugInfo(TurnManager)
 end
 
@@ -59,6 +68,8 @@ function love.draw()
     for y = 0, GRIDSIZE.height do
         love.graphics.line(0, y * CELLSIZE, GRIDSIZE.width * CELLSIZE, y * CELLSIZE)
     end
+
+    RenderSystem.draw(World)
 end
 
 function love.keypressed(key, scancode, isRepeat)
