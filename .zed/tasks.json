@@ -2,15 +2,15 @@
 [
   {
     "label": "Run the game",
-    "command": "love .",
-    // "args": [],
+    "command": "love",
+    "args": ["--console", "."],
     // "env": {},
     // "cwd": "",
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
     "reveal": "no_focus",
     "reveal_target": "dock",
-    "hide": "on_success",
+    "hide": "never",
     "shell": "system",
     "show_summary": true,
     "show_command": true,
