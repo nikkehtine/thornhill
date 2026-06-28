@@ -1,6 +1,3 @@
-local Components = require "components/_types"
-local Helpers = require "scripts/helpers"
-
 local ECS = {}
 ECS.__index = ECS
 
@@ -51,7 +48,7 @@ end
 
 ---Add a component to an entity
 ---@param entity EntityId
----@param componentType ComponentType
+---@param componentType Components
 ---@param componentData any
 function ECS:addComponent(entity, componentType, componentData)
     if not self.entities[entity] then
@@ -67,7 +64,7 @@ end
 
 ---Get the data of a component from an entity
 ---@param entity EntityId
----@param componentType ComponentType
+---@param componentType Components
 ---@return any|nil
 function ECS:getComponent(entity, componentType)
     if not self.components[componentType] then
@@ -79,7 +76,7 @@ end
 
 ---Get all components of an entity
 ---@param entity EntityId
----@return table<ComponentType>
+---@return table<Components>
 function ECS:getAllComponents(entity)
     if not self.entities[entity] then
         error("Entity" .. entity .. "does not exist")
@@ -100,7 +97,7 @@ end
 
 ---Check if an entity has a component
 ---@param entity EntityId
----@param componentType ComponentType
+---@param componentType Components
 ---@return boolean
 function ECS:hasComponent(entity, componentType)
     if not self.components[componentType] then
@@ -110,7 +107,7 @@ function ECS:hasComponent(entity, componentType)
 end
 
 ---Check how many entities have a given component
----@param componentType ComponentType
+---@param componentType Components
 ---@return number
 function ECS:getComponentCount(componentType)
     if not self.components[componentType] then
@@ -126,7 +123,7 @@ end
 
 ---Remove a component from an entity
 ---@param entity EntityId
----@param componentType ComponentType
+---@param componentType Components
 ---@return boolean result Whether the operation was successful
 function ECS:removeComponent(entity, componentType)
     if not self.entities[entity] then
@@ -157,7 +154,7 @@ function ECS:printEntityDebugInfo(entity)
     for componentType, _ in pairs(self.components) do
         if self:hasComponent(entity, componentType) then
             local componentData = self.components[componentType][entity]
-            local componentName = Helpers.reverseLookup(Components, componentType)
+            local componentName = ReverseLookup(COMPONENTS, componentType)
 
             if type(componentData) == "table" then
                 print("  " .. componentName .. ":")
@@ -174,7 +171,7 @@ function ECS:printEntityDebugInfo(entity)
 end
 
 ---Query entities with specific components
----@vararg ComponentType
+---@vararg Components
 ---@return table<EntityId>
 function ECS:query(...)
     local componentTypes = { ... }
@@ -200,7 +197,7 @@ end
 
 ---Query a single entity
 ---You should use this for singletons, i.e. TurnCounter, because it stops querying after finding the first match
----@vararg ComponentType
+---@vararg Components
 ---@return EntityId|nil
 function ECS:querySingle(...)
     local componentTypes = { ... }

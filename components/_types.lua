@@ -1,5 +1,5 @@
----@enum ComponentType
-local ComponentType = {
+---@enum Components
+COMPONENTS = {
     TurnCounter = 1,
     Name = 2,
     Position = 3,
@@ -8,5 +8,3 @@ local ComponentType = {
     PlayerControlled = 6,
     AIControlled = 7,
 }
-
-return ComponentType

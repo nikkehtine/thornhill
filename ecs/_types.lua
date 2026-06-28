@@ -1,2 +1,1 @@
 ---@alias EntityId integer
----@alias ComponentType integer
